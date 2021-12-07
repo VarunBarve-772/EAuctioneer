@@ -12,7 +12,8 @@ import razorpay
 import secrets
 from flask_cors import CORS
 from flask_socketio import SocketIO, join_room, leave_room, send, emit
-
+with open("config.json","r") as c:
+ params=json.load(c)["params"]
 app = Flask(__name__)
 CORS(app)
 
@@ -559,13 +560,102 @@ def pay():
 
         return render_template("pay.html",payment=payment)
 
+@app.route('/success',methods=['GET','POST'])
+def success():
+    return redirect("/")
+
 @app.route('/winbid',methods=['GET','POST'])
 def winbid():
     if 'loggedin' or 'loggedindoc' in session:
         isLog = True
         isLogDoc = True
-        return render_template("winning-bids.html",isLog=isLog,isLogDoc=isLogDoc)
+        cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        cur.execute("select * from buyer where email=%s", (session['loggedin'],))
+        datablog = cur.fetchone()
+        return render_template("winning-bids.html",isLog=isLog,isLogDoc=isLogDoc,datablog=datablog)
 
+@app.route('/adminlogin', methods=['GET', 'POST'])
+def adminlogin():
+    if 'loggedinad' in session:
+        isLogAdmin=True
+        return redirect("/dashboard")
+    else:
+        isLogAdmin = False
+        return render_template("adminlogin.html")
+    return render_template("dashboard.html", params=params, isLogAdmin=isLogAdmin)
+
+@app.route('/dashboard',methods=['GET', 'POST'])
+def dashboard():
+        if 'loggedinad' in session:
+            isLogAdmin=True
+
+            cur1=mysql.connection.cursor()
+            cur1.execute("select * from product")
+            item=cur1.fetchall()
+
+            curb = mysql.connection.cursor()
+            curb.execute("select * from buyer")
+            itemb = curb.fetchall()
+
+            curs = mysql.connection.cursor()
+            curs.execute("select * from seller")
+            items = curs.fetchall()
+
+            cur2 = mysql.connection.cursor()
+            cur2.execute("select COUNT(*) FROM buyer")
+            item1 = cur2.fetchone()
+            cur3 = mysql.connection.cursor()
+            cur3.execute("select COUNT(*) FROM seller")
+            item2 = cur3.fetchone()
+            cur4 = mysql.connection.cursor()
+            cur4.execute("select COUNT(*) FROM product")
+            item3 = cur4.fetchone()
+
+            ispatient=True;
+            return render_template("dashboard.html", isLogAdmin=isLogAdmin,ispatient=ispatient,item=item,item1=item1,item2=item2,item3=item3,itemb=itemb,items=items)
+        if request.method == "POST":
+         username = request.form.get("uname")
+         userpass = request.form.get("pass")
+         if (username == params["admin_user"] and userpass == params["admin_password"]):
+            session['loggedinad'] = username
+            isLogAdmin = True
+            cur1 = mysql.connection.cursor()
+            cur1.execute("select * from product")
+            item = cur1.fetchall()
+
+            curb = mysql.connection.cursor()
+            curb.execute("select * from buyer")
+            itemb = curb.fetchall()
+
+            curs = mysql.connection.cursor()
+            curs.execute("select * from seller")
+            items = curs.fetchall()
+
+            cur2 = mysql.connection.cursor()
+            cur2.execute("select COUNT(*) FROM buyer")
+            item1 = cur2.fetchone()
+            cur3 = mysql.connection.cursor()
+            cur3.execute("select COUNT(*) FROM seller")
+            item2 = cur3.fetchone()
+            cur4 = mysql.connection.cursor()
+            cur4.execute("select COUNT(*) FROM product")
+            item3 = cur4.fetchone()
+
+            ispatient = True;
+            return render_template("dashboard.html", isLogAdmin=isLogAdmin, ispatient=ispatient, item=item, item1=item1,
+                                   item2=item2, item3=item3, itemb=itemb, items=items)
+         else:
+            isLogAdmin = False
+            admsg="Incorrect Credentials"
+            return render_template("adminlogin.html",params=params,isLogAdmin=isLogAdmin,admsg=admsg)
+
+        return render_template("adminlogin.html")
+
+@app.route('/adlogout')
+
+def adlogout():
+   session.pop('loggedinad')
+   return redirect("/adminlogin")
 if __name__ == '__main__':
     app.run(debug=True)
 

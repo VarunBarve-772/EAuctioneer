@@ -1,0 +1,188 @@
+
+
+<!-- ########################################################################################## -->
+
+
+
+{% block body %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Admin-Login</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+<!--===============================================================================================-->  
+  <!-- <link rel="icon" type="image/png" href="images/icons/favicon.ico"/> -->
+
+  <link rel="icon" type="image/png"  href="{{url_for('static', filename='signinn/images/icons/favicon.ico')}}">
+<!--===============================================================================================-->
+  <!-- <link rel="stylesheet" type="text/css" href="vendor/bootstrap/css/bootstrap.min.css"> -->
+
+  <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='signinn/vendor/bootstrap/css/bootstrap.min.css')}}" >
+<!--===============================================================================================-->
+  <!-- <link rel="stylesheet" type="text/css" href="fonts/font-awesome-4.7.0/css/font-awesome.min.css"> -->
+
+  <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='signinn/fonts/font-awesome-4.7.0/css/font-awesome.min.css')}}" >
+
+<!--===============================================================================================-->
+  <!-- <link rel="stylesheet" type="text/css" href="vendor/animate/animate.css"> -->
+
+<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='signinn/vendor/animate/animate.css')}}" >
+
+<!--===============================================================================================-->  
+  <!-- <link rel="stylesheet" type="text/css" href="vendor/css-hamburgers/hamburgers.min.css"> -->
+
+<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='signinn/vendor/css-hamburgers/hamburgers.min.css')}}" >
+
+<!--===============================================================================================-->
+  <!-- <link rel="stylesheet" type="text/css" href="vendor/select2/select2.min.css"> -->
+
+<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='signinn/vendor/select2/select2.min.css')}}" >
+
+<!--===============================================================================================-->
+  <!-- <link rel="stylesheet" type="text/css" href="css/util.css"> -->
+  <!-- <link rel="stylesheet" type="text/css" href="css/main.css"> -->
+
+
+<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='signinn/css/util.css')}}" >
+
+<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='signinn/css/main.css')}}" >
+
+{% if isLogAdmin==False%}
+    <body onload="doMyAlertsAd('{{admsg}}');">
+      {% else %}
+      <body>
+    {% endif %}
+    <style>
+      body {
+                  animation: fadeInAnimation ease 1.25s;
+                  animation-iteration-count: 1;
+                  animation-fill-mode: forwards;
+              }
+              @keyframes fadeInAnimation {
+                  0% {
+                      opacity: 0;
+                  }
+                  100% {
+                      opacity: 1;
+                  }
+              }	
+      
+      
+      </style>
+
+</head>
+
+
+
+
+
+<body style="font-family:cursive;">
+  
+
+
+
+  <div class="limiter">
+    <div class="container-login100">
+      <div class="wrap-login100">
+        <div class="login100-pic js-tilt" data-tilt>
+         
+          <!-- <img src="images/img-01.png" alt="IMG"> -->
+           <img src="{{url_for('static', filename='admin.jpg')}}" alt="IMG" >
+        </div>
+
+        <form class="login100-form validate-form" action="/dashboard" method="POST">
+
+
+          <span class="login100-form-title">
+            Admin Login
+          </span>
+
+          <div class="wrap-input100 validate-input" data-validate = "Valid email is required: ex@abc.xyz" style="margin-top:0cm ;">
+            <input class="input100" type="text"  id="uname" name="uname" placeholder="Email" >
+            <span class="focus-input100"></span>
+            <span class="symbol-input100">
+              <i class="fa fa-envelope" aria-hidden="true"></i>
+            </span>
+          </div>
+
+          <div class="wrap-input100 validate-input" data-validate = "Password is required" style="margin-top:0.5cm ;">
+            <input class="input100" type="password" id="pass" name="pass" placeholder="Password">
+            <span class="focus-input100"></span>
+            <span class="symbol-input100">
+              <i class="fa fa-lock" aria-hidden="true"></i>
+            </span>
+          </div>
+          
+          <div class="container-login100-form-btn">
+            <button class="login100-form-btn" >
+              Login
+            </button>
+          </div>
+
+             <div class="text-center p-t-13">
+            <a class="txt2" href="/">
+              Home
+              <i class="fa fa-home" aria-hidden="true"></i>
+            </a>
+          </div>
+
+
+        </form>
+
+
+      </div>
+    </div>
+  </div>
+  
+  
+
+        {% block javascript %}
+
+    <script src="{{ url_for('static',filename='signinn/vendor/jquery/jquery-3.2.1.min.js') }}"></script>
+    <script src="{{ url_for('static',filename='signinn/vendor/bootstrap/js/popper.js') }}"></script>
+    <script src="{{ url_for('static',filename='signinn/vendor/bootstrap/js/bootstrap.min.js') }}"></script>
+    <script src="{{ url_for('static',filename='signinn/vendor/select2/select2.min.js') }}"></script>
+    <script src="{{ url_for('static',filename='signinn/vendor/tilt/tilt.jquery.min.js') }}"></script>
+    <script src="{{ url_for('static',filename='signinn/js/main.js') }}"></script>
+
+{% endblock %}
+  
+<!--===============================================================================================-->  
+  <!-- <script src="vendor/jquery/jquery-3.2.1.min.js"></script> -->
+<!--===============================================================================================-->
+  <!-- <script src="vendor/bootstrap/js/popper.js"></script> -->
+  <!-- <script src="vendor/bootstrap/js/bootstrap.min.js"></script> -->
+<!--===============================================================================================-->
+  <!-- <script src="vendor/select2/select2.min.js"></script> -->
+<!--===============================================================================================-->
+  <!-- <script src="vendor/tilt/tilt.jquery.min.js"></script> -->
+  <script >
+    $('.js-tilt').tilt({
+      scale: 1.1
+    })
+  </script>
+
+  
+<!--===============================================================================================-->
+  <!-- <script src="js/main.js"></script> -->
+
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.12.5/dist/sweetalert2.all.min.js"></script>
+    <script type="text/javascript">
+      function doMyAlertsAd(admsg)
+        {
+            swal.fire({
+            title: admsg,
+            text: admsg,
+            icon: "error",
+            closeOnConfirm: false
+            });
+        }
+    </script>
+
+</body>
+</html>
+
+
+{% endblock %}
